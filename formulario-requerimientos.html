@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario para Cliente Abogado - Levantamiento de Requerimientos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0b2b3f 0%, #1c4e6f 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            overflow: hidden;
+        }
+        .header {
+            background: #0a2b3c;
+            padding: 32px 40px;
+            text-align: center;
+            border-bottom: 4px solid #d4af37;
+        }
+        .header h1 { font-size: 28px; font-weight: 700; color: white; }
+        .header h1 i { color: #d4af37; margin-right: 10px; }
+        .header p { color: #cbd5e1; margin-top: 8px; }
+        .form-section { padding: 40px; }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+        .full-width { grid-column: span 2; }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        label {
+            font-weight: 600;
+            font-size: 14px;
+            color: #1e293b;
+        }
+        label i { color: #d4af37; width: 20px; }
+        .required::after {
+            content: "*";
+            color: #e53e3e;
+            margin-left: 4px;
+        }
+        input, select, textarea {
+            padding: 12px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            background-color: #fefefe;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #d4af37;
+            box-shadow: 0 0 0 3px rgba(212,175,55,0.2);
+        }
+        .phone-group {
+            display: flex;
+            gap: 12px;
+        }
+        .phone-group select {
+            width: 120px;
+        }
+        .phone-group input {
+            flex: 1;
+        }
+        hr {
+            margin: 24px 0;
+            border: none;
+            border-top: 2px dashed #e2e8f0;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0a2b3c;
+            margin: 16px 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #d4af37;
+            display: inline-block;
+        }
+        .btn-submit {
+            background: #0a2b3c;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            transition: all 0.3s;
+        }
+        .btn-submit:hover {
+            background: #d4af37;
+            color: #0a2b3c;
+            transform: translateY(-2px);
+        }
+        .mensaje {
+            margin-top: 24px;
+            padding: 16px;
+            border-radius: 20px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+        }
+        .mensaje.exito {
+            background: #d4edda;
+            color: #155724;
+            border-left: 6px solid #28a745;
+        }
+        .mensaje.error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 6px solid #dc3545;
+        }
+        @media (max-width: 768px) {
+            .form-grid { grid-template-columns: 1fr; }
+            .full-width { grid-column: span 1; }
+            .phone-group { flex-direction: column; }
+            .phone-group select { width: 100%; }
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #94a3b8;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-gavel"></i> Levantamiento de Requerimientos</h1>
+        <p>Completa el formulario para comenzar con tu sitio web profesional</p>
+    </div>
+    <div class="form-section">
+        <form id="requerimientosForm">
+            <div class="form-grid">
+                <!-- Datos del cliente -->
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Nombre completo <span class="required">*</span></label>
+                    <input type="text" id="nombre" placeholder="Ej. Dr. Juan Pérez" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-building"></i> Nombre del bufete</label>
+                    <input type="text" id="bufete" placeholder="Ej. Pérez & Asociados">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-globe"></i> País</label>
+                    <select id="pais">
+                        <option value="">Selecciona...</option>
+                        <option value="España">España (+34)</option>
+                        <option value="México">México (+52)</option>
+                        <option value="Argentina">Argentina (+54)</option>
+                        <option value="Colombia">Colombia (+57)</option>
+                        <option value="Chile">Chile (+56)</option>
+                        <option value="Perú">Perú (+51)</option>
+                        <option value="Estados Unidos">Estados Unidos (+1)</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-phone-alt"></i> Teléfono <span class="required">*</span></label>
+                    <div class="phone-group">
+                        <select id="codigoPais">
+                            <option value="+34">+34 (España)</option>
+                            <option value="+52">+52 (México)</option>
+                            <option value="+54">+54 (Argentina)</option>
+                            <option value="+57">+57 (Colombia)</option>
+                            <option value="+56">+56 (Chile)</option>
+                            <option value="+51">+51 (Perú)</option>
+                            <option value="+1">+1 (EE.UU)</option>
+                            <option value="+33">+33 (Francia)</option>
+                            <option value="+49">+49 (Alemania)</option>
+                        </select>
+                        <input type="tel" id="telefono" placeholder="Número de teléfono" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Correo electrónico <span class="required">*</span></label>
+                    <input type="email" id="correo" placeholder="contacto@bufete.com" required>
+                </div>
+
+                <!-- Objetivo y especialidades -->
+                <div class="form-group">
+                    <label><i class="fas fa-bullseye"></i> Objetivo principal</label>
+                    <select id="objetivo">
+                        <option value="">Selecciona una opción</option>
+                        <option>Solo presencia digital (tarjetón de presentación)</option>
+                        <option>Captar nuevos clientes</option>
+                        <option>Ofrecer consultoría o servicios en línea</option>
+                        <option>Posicionarme como experto (con blog/contenido)</option>
+                        <option>Otro (especificar en observaciones)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-scale-balanced"></i> Especialidades legales</label>
+                    <input type="text" id="especialidades" placeholder="Ej: Derecho familiar, Penal, Laboral, Civil">
+                </div>
+
+                <!-- Funcionalidades -->
+                <div class="form-group">
+                    <label><i class="fas fa-blog"></i> ¿Necesita blog?</label>
+                    <select id="blog">
+                        <option value="No">No</option>
+                        <option value="Sí">Sí</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-envelope-open-text"></i> ¿Formulario de contacto?</label>
+                    <select id="formulario">
+                        <option value="Sí">Sí (recomendado)</option>
+                        <option value="No">No</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-calendar-check"></i> ¿Reserva de citas en línea?</label>
+                    <select id="reservas">
+                        <option value="No">No</option>
+                        <option value="Sí">Sí</option>
+                    </select>
+                </div>
+
+                <!-- Diseño -->
+                <div class="form-group">
+                    <label><i class="fas fa-palette"></i> ¿Tiene logo?</label>
+                    <select id="logo">
+                        <option value="No">No</option>
+                        <option value="Sí">Sí</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-fill-drip"></i> Colores preferidos</label>
+                    <input type="text" id="colores" placeholder="Ej: Azul marino, dorado, gris">
+                </div>
+
+                <!-- Contenido y plazos -->
+                <div class="form-group">
+                    <label><i class="fas fa-file-alt"></i> ¿Tiene los textos y fotos listos?</label>
+                    <select id="contenido">
+                        <option value="No">No, necesito ayuda</option>
+                        <option value="Parte">Tengo parte</option>
+                        <option value="Sí">Sí, todo listo</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-coins"></i> Presupuesto estimado</label>
+                    <input type="text" id="presupuesto" placeholder="Ej: 300-500 €">
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-calendar-alt"></i> Fecha deseada de lanzamiento</label>
+                    <input type="date" id="fechaLanzamiento">
+                </div>
+                <div class="form-group full-width">
+                    <label><i class="fas fa-comment-dots"></i> Observaciones adicionales</label>
+                    <textarea id="observaciones" rows="3" placeholder="Cualquier otro detalle importante..."></textarea>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Enviar requerimientos</button>
+            <div id="mensaje" class="mensaje"></div>
+        </form>
+    </div>
+    <footer>
+        <i class="fas fa-lock"></i> Datos protegidos – Solo para fines de cotización
+    </footer>
+</div>
+
+<script>
+    // ⚠️ REEMPLAZA CON LA URL DE TU APPS SCRIPT
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzAcfYXGu103Ldr1twaKRuW7vYI6T1QSPMYiDsVdm-yncD6vasSrzP68jcoPHDV38nF/exec";
+
+    // Sincronización: al elegir país, se actualiza el código de teléfono automáticamente
+    const paisSelect = document.getElementById('pais');
+    const codigoSelect = document.getElementById('codigoPais');
+
+    const mapaPaisCodigo = {
+        'España': '+34',
+        'México': '+52',
+        'Argentina': '+54',
+        'Colombia': '+57',
+        'Chile': '+56',
+        'Perú': '+51',
+        'Estados Unidos': '+1'
+    };
+
+    paisSelect.addEventListener('change', function() {
+        const pais = this.value;
+        if (mapaPaisCodigo[pais]) {
+            codigoSelect.value = mapaPaisCodigo[pais];
+        }
+    });
+
+    const form = document.getElementById('requerimientosForm');
+    const mensajeDiv = document.getElementById('mensaje');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Construir teléfono completo con código (ej: +57 3001234567)
+        const telefonoCompleto = codigoSelect.value + " " + document.getElementById('telefono').value.trim();
+        
+        const data = {
+            nombre: document.getElementById('nombre').value.trim(),
+            bufete: document.getElementById('bufete').value.trim(),
+            pais: paisSelect.value,
+            telefono: telefonoCompleto,
+            correo: document.getElementById('correo').value.trim(),
+            objetivo: document.getElementById('objetivo').value,
+            especialidades: document.getElementById('especialidades').value.trim(),
+            blog: document.getElementById('blog').value,
+            formulario: document.getElementById('formulario').value,
+            reservas: document.getElementById('reservas').value,
+            logo: document.getElementById('logo').value,
+            colores: document.getElementById('colores').value.trim(),
+            contenido: document.getElementById('contenido').value,
+            presupuesto: document.getElementById('presupuesto').value.trim(),
+            fechaLanzamiento: document.getElementById('fechaLanzamiento').value,
+            observaciones: document.getElementById('observaciones').value.trim()
+        };
+
+        // Validar campos obligatorios
+        if (!data.nombre || !document.getElementById('telefono').value.trim() || !data.correo) {
+            mostrarMensaje('❌ Por favor completa: nombre, teléfono y correo electrónico', 'error');
+            return;
+        }
+
+        mostrarMensaje('📤 Enviando información...', '');
+
+        try {
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            
+            mostrarMensaje('✅ ¡Formulario enviado con éxito! Revisaré tus respuestas y te contactaré pronto.', 'exito');
+            form.reset();
+            
+            // Resetear selects a valores por defecto (opcional)
+            paisSelect.value = "";
+            document.getElementById('objetivo').value = "";
+            document.getElementById('blog').value = "No";
+            document.getElementById('formulario').value = "Sí";
+            document.getElementById('reservas').value = "No";
+            document.getElementById('logo').value = "No";
+            document.getElementById('contenido').value = "No";
+            codigoSelect.value = "+34"; // valor por defecto
+            
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarMensaje('❌ Error de conexión. Por favor verifica tu internet o intenta más tarde.', 'error');
+        }
+    });
+
+    function mostrarMensaje(texto, tipo) {
+        mensajeDiv.textContent = texto;
+        mensajeDiv.className = 'mensaje ' + tipo;
+        mensajeDiv.style.display = 'block';
+        if (tipo === 'exito') {
+            setTimeout(() => {
+                mensajeDiv.style.display = 'none';
+            }, 5000);
+        }
+    }
+</script>
+</body>
+</html>
